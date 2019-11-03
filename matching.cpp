@@ -73,17 +73,31 @@ int check_worst_candidate(Matching current_matching, GraphSchool school_graph, G
   Deleta a escola school_id das listas de preferências dos professores cujas qualificações
   sejam menores do que as qualificações do pior candidato para aquela vaga.
 */
-void del(Graph professor_graph, int worst_candidate_score, int school_id) {
+void del(Graph &professor_graph, int worst_candidate_score, int school_id) {
+  // cout << "PARA A ESCOLA " << school_id << "\n";
   for(int i = 0; i < professor_graph.size(); i++) {
     for(int j = 0; j < professor_graph[i].intentions.size(); j++) {
       if(professor_graph[i].intentions[j] == school_id) {
         if(professor_graph[i].qualification <= worst_candidate_score) {
+          // cout << "Escola de número " << school_id << "\n";
+          // cout << "intenções antes: ";
+          // for(int m = 0; m < professor_graph[i].intentions.size(); m++) {
+          //   cout << professor_graph[i].intentions[m] << " ";
+          // }
+          // cout << "\n";
           professor_graph[i].intentions.erase(std::remove(professor_graph[i].intentions.begin(), \
             professor_graph[i].intentions.end(), school_id), professor_graph[i].intentions.end());
+
+          // cout << "intenções depois: ";
+          // for(int m = 0; m < professor_graph[i].intentions.size(); m++) {
+          //   cout << professor_graph[i].intentions[m] << " ";
+          // }
+          // cout << "\n";
         }
       }
     }
   }
+  // cout << "======== \n";
 }
 
 /*
@@ -112,18 +126,21 @@ vector<Matching> matching(Graph professor_graph, GraphSchool school_graph) {
 
   while(professor_graph.size() > 0 && check_professor_intentions(professor_graph)) {
     for(int i = 0; i < professor_graph.size(); i++) {
-      int current_school = professor_graph[i].intentions[0] - 1;
-      cout << "Professor " << i+1 << " aplicou para a escola " << professor_graph[i].intentions[0] << "\n";
+      int current_school = professor_graph[i].intentions[0] -1;
+      // cout << "Professor " << i+1 << " aplicou para a escola " << professor_graph[i].intentions[0] << "\n";
 
       // Adiciona professor na escola
-      matching[current_school].school_id = current_school;
+      matching[current_school].school_id = current_school + 1;
       matching[current_school].professors_id.push_back(i);
+      
+      professor_graph[i].intentions.erase(std::remove(professor_graph[i].intentions.begin(), \
+            professor_graph[i].intentions.end(), current_school + 1), professor_graph[i].intentions.end());
 
       // escola tem mais candidatos aplicando do que vagas
       if(matching[current_school].professors_id.size() > school_graph[current_school].vacancy.size()) {
         int worst_candidate = check_worst_candidate(matching[current_school], school_graph, professor_graph);
 
-        cout << "O pior candidato para a escola " << current_school << " é o professor " << worst_candidate << "\n";
+        // cout << "O pior candidato para a escola " << current_school << " é o professor " << worst_candidate << "\n";
         matching[current_school].professors_id.erase(std::remove(matching[current_school].professors_id.begin(), \
           matching[current_school].professors_id.end(), worst_candidate), matching[current_school].professors_id.end());
       }
@@ -138,4 +155,5 @@ vector<Matching> matching(Graph professor_graph, GraphSchool school_graph) {
     }
   }
 
+  return matching;
 }

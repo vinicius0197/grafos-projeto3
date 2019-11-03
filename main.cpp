@@ -60,11 +60,20 @@ void read_and_init_graph(Graph &graph, GraphSchool &graphSchool) {
 int main() {
   Graph graphTeacher;
   GraphSchool graphSchool;
+  vector<Matching> match;
   read_and_init_graph(graphTeacher, graphSchool);
 
   // display_graph(graphTeacher);
   // display_graph_school(graphSchool);
-  matching(graphTeacher, graphSchool);
+  match = matching(graphTeacher, graphSchool);
+
+  for(int i = 0; i < match.size(); i++) {
+    cout << "ESCOLA NÚMERO " << i << "\n";
+    for(int j = 0; j < match[i].professors_id.size(); j++) {
+      cout << "Professor " << match[i].professors_id[j] << " \n";
+    }
+    cout << "=====\n";
+  }
 
   return 0;
 }
