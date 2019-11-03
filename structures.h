@@ -21,7 +21,12 @@ struct VertexSchool{
 
 struct Matching {
     int school_id;
-    vector <int> teacher_id;
+    vector <int> professors_id;
+};
+
+struct ListSchool {
+    int school_id;
+    vector <int> projected_professors;
 };
 
 #endif
