@@ -99,16 +99,16 @@ vector<Matching> matching(Graph professor_graph, GraphSchool school_graph) {
 
   while(professor_graph.size() > 0 && check_professor_intentions(professor_graph)) {
     for(int i = 0; i < professor_graph.size(); i++) {
-      Matching temp_matching;
       int current_school = professor_graph[i].intentions[0] - 1;
-      temp_matching = apply(i+1, professor_graph[i].intentions[0]); // professor aplica para a maior prioridade na sua lista de intenções
       cout << "Professor " << i+1 << " aplicou para a escola " << professor_graph[i].intentions[0] << "\n";
-      matching[current_school].professors_id;
-      matching.push_back(temp_matching);
+
+      // Adiciona professor na escola
+      matching[current_school].school_id = current_school;
+      matching[current_school].professors_id.push_back(i);
 
       // escola tem mais candidatos aplicando do que vagas
-      if(temp_matching.professors_id.size() > school_graph[current_school].vacancy.size()) {
-        int worst_candidate = check_worst_candidate(temp_matching, school_graph, professor_graph);
+      if(matching[current_school].professors_id.size() > school_graph[current_school].vacancy.size()) {
+        int worst_candidate = check_worst_candidate(matching[current_school], school_graph, professor_graph);
 
         cout << "O pior candidato para a escola " << current_school << " é o professor " << worst_candidate << "\n";
         matching[current_school].professors_id.erase(std::remove(matching[current_school].professors_id.begin(), \
@@ -117,7 +117,9 @@ vector<Matching> matching(Graph professor_graph, GraphSchool school_graph) {
 
       // se a escola já está com as vagas cheias
       if(matching[current_school].professors_id.size() == school_graph[current_school].vacancy.size()) {
-        int worst_candidate = check_worst_candidate(temp_matching, school_graph, professor_graph);
+        int worst_candidate = check_worst_candidate(matching[current_school], school_graph, professor_graph);
+
+        // TODO: excluir a escola atual das listas de preferências de todos os professores piores que o worst_candidate
 
         del(professor_graph);
       }
