@@ -69,8 +69,21 @@ int check_worst_candidate(Matching current_matching, GraphSchool school_graph, G
   return worst_candidate;
 }
 
-void del(Graph professor_graph) {
-
+/*
+  Deleta a escola school_id das listas de preferências dos professores cujas qualificações
+  sejam menores do que as qualificações do pior candidato para aquela vaga.
+*/
+void del(Graph professor_graph, int worst_candidate_score, int school_id) {
+  for(int i = 0; i < professor_graph.size(); i++) {
+    for(int j = 0; j < professor_graph[i].intentions.size(); j++) {
+      if(professor_graph[i].intentions[j] == school_id) {
+        if(professor_graph[i].qualification <= worst_candidate_score) {
+          professor_graph[i].intentions.erase(std::remove(professor_graph[i].intentions.begin(), \
+            professor_graph[i].intentions.end(), school_id), professor_graph[i].intentions.end());
+        }
+      }
+    }
+  }
 }
 
 /*
@@ -119,9 +132,8 @@ vector<Matching> matching(Graph professor_graph, GraphSchool school_graph) {
       if(matching[current_school].professors_id.size() == school_graph[current_school].vacancy.size()) {
         int worst_candidate = check_worst_candidate(matching[current_school], school_graph, professor_graph);
 
-        // TODO: excluir a escola atual das listas de preferências de todos os professores piores que o worst_candidate
-
-        del(professor_graph);
+        // exclui a escola atual das listas de preferências de todos os professores piores que o worst_candidate
+        del(professor_graph, professor_graph[worst_candidate].qualification, current_school);
       }
     }
   }
