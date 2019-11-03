@@ -1,48 +1,67 @@
 // Vinícius Costa e Silva - 15/0052138
 // Diego Vaz Fernandes - 16/0117925
 
-#include<bits/stdc++.h> 
-#include "graph.h"
+#include  <bits/stdc++.h> 
+// #include "graph.h"
+#include "utils.h"
 #include "map"
 #include "iostream"
 
 using namespace std;
+
 map<int, string> codXmap;
-
-vector<string> split(string input_string) {
-  string buf;
-  stringstream ss(input_string);
-  vector<string> tokens;
-
-  while (ss >> buf){
-      tokens.push_back(buf);
-  }
-  return tokens;
-}
-
-// TODO: refatorar para ler o novo arquivo
-Graph read_and_init_graph(Graph graph) {
+   
+//  
+void read_and_init_graph(Graph &graph, GraphSchool &graphSchool) {
   
   string linha;
   int element1, element2, peso;
   ifstream arquivo ("input.txt"); // ifstream = padrão ios:in
   
-  if (arquivo.is_open())
-  {
+  if (arquivo.is_open()){
+    int contador = 0;
     while (!arquivo.eof()){ //enquanto end of file for false continua
+      //pega uma linha do arquivo e coloca na varialvel linha
       getline (arquivo, linha);
-      vector<string> tokens = split(linha);
-      element1 = stoi(tokens[0]);
-      element2 = stoi(tokens[1]);
-      peso = stoi(tokens[2]);
-      graph = add_edge(graph, element1, element2, peso);
+
+      if ((contador > 2) && (contador < 103)){
+        
+        Vertex vertex;
+        replaceLine(linha);
+        std::replace(linha.begin(), linha.end(), 'P', ' ');
+
+        vector<int> teacher = split(linha);
+        
+        vertex.qualification = teacher[1];
+        for (int i = 2; i<teacher.size(); i++){
+          vertex.intentions.push_back(teacher[i]);
+        }
+        graph.push_back(vertex);
+        // cada professor vai ser a sua posição correspondente -1  no vetor do grafo
+      }else if(contador >105){
+        
+        VertexSchool vertexSchool;
+        replaceLine(linha);
+        vector<int> school = split(linha);
+
+        for (int i = 1; i<school.size(); i++){
+          vertexSchool.vacancy.push_back(school[i]);
+        }
+        graphSchool.push_back(vertexSchool);
+      }
+      contador ++;
     }
     arquivo.close();
-    return graph;
   }
   else cout << "Não foi possivel abrir o arquivo"; 
 }
 
 int main() {
-  // TODO
+  Graph graphTeacher;
+  GraphSchool graphSchool;
+  read_and_init_graph(graphTeacher, graphSchool);
+
+  display_graph(graphTeacher);
+  display_graph_school(graphSchool);
+  return 0;
 }

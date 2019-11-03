@@ -7,13 +7,11 @@
 using namespace std;
 
 struct Vertex{
-    int code;
-    int weight;
-    vector <int> adjacents;
+    int qualification;
+    vector <int> intentions;
 };
 
-struct distanceArray {
-  int code;
-  int distance;
-  vector<int> path;
+struct VertexSchool{
+    //0 representa a primeira vaga e 1 a segunda. O valor detro representa a qualificação minima necessária
+    vector <int> vacancy;
 };

@@ -11,11 +11,14 @@
 using namespace std;
 
 typedef vector <Vertex> Graph;
+typedef vector <VertexSchool> GraphSchool;
 
-Graph init(int verttex, int weight);
-Graph add_edge(Graph graph, int origem, int destino, int weight);
-int findIndex(Graph graph, int origems);
 void display_graph(Graph graph);
-vector<int> find_all_vertex(Graph graph);
+void display_graph_school(GraphSchool graphSchool);
+
+// Graph init(int verttex, int weight);
+// Graph add_edge(Graph graph, int origem, int destino, int weight);
+// int findIndex(Graph graph, int origems);
+// vector<int> find_all_vertex(Graph graph);
 
 #endif
