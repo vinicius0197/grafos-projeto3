@@ -12,19 +12,21 @@ vector<ListSchool> build_school_list(Graph professor_graph, GraphSchool school_g
   vector<ListSchool> projected_school_list;
 
   for(int i = 0; i < school_graph.size(); i++) {
+    ListSchool school_list;
+    vector<int> projected_professors;
     for(int j = 0; j < professor_graph.size(); j++) {
       for(int k = 0; k < professor_graph[j].intentions.size(); k++) {
-        if(professor_graph[j].intentions[k] == i) {
-          cout << "Professor " << j+1 << " tem interesse na escola " << i+1;
-          cout << "  -> valor de i: " << i << " valor de j: "<< j << " valor de k" << k << "\n";
-          // ListSchool school_list;
-          // school_list.school_id = i;
-          // school_list.projected_professors.push_back(j);
-          // projected_school_list.push_back(school_list);
+        if(professor_graph[j].intentions[k]-1 == i) {
+          projected_professors.push_back(j+1);
         }
       }
     }
+    school_list.school_id = i;
+    school_list.projected_professors = projected_professors;
+    projected_school_list.push_back(school_list);
   }
+
+  return projected_school_list;
 }
 
 /*
@@ -33,7 +35,18 @@ vector<ListSchool> build_school_list(Graph professor_graph, GraphSchool school_g
 */
 vector<Matching> matching(Graph professor_graph, GraphSchool school_graph) {
   vector<ListSchool> projected_school_list;
+  vector<Matching> test;
   projected_school_list = build_school_list(professor_graph, school_graph);
+
+  // Função de DEBUG para ver como está a lista de professores nas filas das escolas
+  for(int i = 0; i < projected_school_list.size(); i++) {
+    cout << "ESCOLA NUMERO " << i + 1 << "\n";
+    cout << "PROFESSORES NA FILA: \n";
+    for(int j = 0; j < projected_school_list[i].projected_professors.size(); j++) {
+      cout << "Professor " << projected_school_list[i].projected_professors[j] << "\n";
+    }
+    cout << "===== \n";
+  }
 
 
   // for(int i = 0; i < projected_school_list.size(); i++) {
@@ -55,7 +68,7 @@ vector<Matching> matching(Graph professor_graph, GraphSchool school_graph) {
   //     current_matching = apply(i, professor_graph[i].intentions[0], 0);
   //   }
   // }
-
+  return test;
 }
 
 /*
