@@ -1,3 +1,6 @@
+#ifndef STRUCTURES_H_
+#define STRUCTURES_H_
+
 #include <iostream>
 #include <list>
 #include <iterator>
@@ -15,3 +18,10 @@ struct VertexSchool{
     //0 representa a primeira vaga e 1 a segunda. O valor detro representa a qualificação minima necessária
     vector <int> vacancy;
 };
+
+struct Matching {
+    int school_id;
+    vector <int> teacher_id;
+};
+
+#endif

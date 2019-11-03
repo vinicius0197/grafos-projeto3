@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "map"
 #include "iostream"
+#include "matching.h"
 
 using namespace std;
 
@@ -61,7 +62,9 @@ int main() {
   GraphSchool graphSchool;
   read_and_init_graph(graphTeacher, graphSchool);
 
-  display_graph(graphTeacher);
-  display_graph_school(graphSchool);
+  // display_graph(graphTeacher);
+  // display_graph_school(graphSchool);
+  matching(graphTeacher, graphSchool);
+
   return 0;
 }
