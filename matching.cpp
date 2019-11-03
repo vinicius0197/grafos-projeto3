@@ -15,10 +15,12 @@ vector<ListSchool> build_school_list(Graph professor_graph, GraphSchool school_g
     for(int j = 0; j < professor_graph.size(); j++) {
       for(int k = 0; k < professor_graph[j].intentions.size(); k++) {
         if(professor_graph[j].intentions[k] == i) {
-          ListSchool school_list;
-          school_list.school_id = i;
-          school_list.projected_professors.push_back(j);
-          projected_school_list.push_back(school_list);
+          cout << "Professor " << j+1 << " tem interesse na escola " << i+1;
+          cout << "  -> valor de i: " << i << " valor de j: "<< j << " valor de k" << k << "\n";
+          // ListSchool school_list;
+          // school_list.school_id = i;
+          // school_list.projected_professors.push_back(j);
+          // projected_school_list.push_back(school_list);
         }
       }
     }
@@ -33,15 +35,17 @@ vector<Matching> matching(Graph professor_graph, GraphSchool school_graph) {
   vector<ListSchool> projected_school_list;
   projected_school_list = build_school_list(professor_graph, school_graph);
 
-  for(int i = 0; i < projected_school_list.size(); i++) {
-    cout << "Escola de número " << i << "\n";
-    cout << "Possíveis professores: \n";
-    for(int j = 0; j < projected_school_list[i].projected_professors.size(); j++) {
-      cout << "Professor " << j <<"\n";
-    }
 
-    cout << "======\n";
-  }
+  // for(int i = 0; i < projected_school_list.size(); i++) {
+  //   cout << "Escola de número " << i << "\n";
+  //   cout << "Possíveis professores: \n";
+  //   cout << projected_school_list[i].projected_professors.size() << "\n";
+  //   // for(int j = 0; j < projected_school_list[i].projected_professors.size(); j++) {
+  //   //   cout << "Professor " << j <<"\n";
+  //   // }
+
+  //   cout << "======\n";
+  // }
 
   // vector<Matching> provisional_matching; // o ID no vetor representa a escola, que é o mesmo que o atributo school_id
   // // Inicialmente, todos os professores estão livres. A quantidade de professores é o tamanho do professor_graph
