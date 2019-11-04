@@ -30,9 +30,11 @@ vector<ListSchool> build_school_list(Graph professor_graph, GraphSchool school_g
   return projected_school_list;
 }
 
-bool check_professor_intentions(Graph professor_graph) {
-  for(int i  = 0; i < professor_graph.size(); i++) {
-    if(!professor_graph[i].intentions.empty()) {
+bool check_professor_intentions(vector<FreeProfessor> free_professores) {
+
+  for(int i  = 0; i < free_professores.size(); i++) {
+
+    if(!free_professores[i].alocated && !free_professores[i].esgotou_intentions) {
       return true;
     }
   }
@@ -104,8 +106,97 @@ void del(Graph &professor_graph, int worst_candidate_score, int school_id) {
   Função principal que realiza o matching entre escolas e professores. Recebe os grafos
   de professores e escolas e retorna um objeto do tipo `Matching`.
 */
-vector<Matching> matching(Graph professor_graph, GraphSchool school_graph) {
+void matching(Graph professor_graph, GraphSchool &school_graph) {
   
+  vector<FreeProfessor> free_professores;
+
+  for(int i = 0; i < 100; i++) {
+    FreeProfessor professor;
+    professor.professor_id = i;
+    free_professores.push_back(professor);
+  }
+  while(check_professor_intentions(free_professores)){
+      
+      for(int i = 0; i < free_professores.size(); i++){
+          bool prof_approved = false;
+          if(!free_professores[i].esgotou_intentions && !free_professores[i].alocated){
+            
+            int index_graph_professor = free_professores[i].professor_id;
+            int intention_actived = free_professores[i].count_intention;
+            int qualification_professor = professor_graph[index_graph_professor].qualification;
+            int index_graph_prof_alocated;
+
+            //retorna o indice da escola da intenção atual do professor
+            int school_intention = professor_graph[index_graph_professor].intentions[intention_actived] -1;
+            
+
+            for(int q = 0; q <school_graph[school_intention].vacancy.size() ; q++){
+              if(!prof_approved){
+                // cout <<"aproved" << endl;
+                int vaga_qualification = school_graph[school_intention].vacancy[q].qualification;
+                index_graph_prof_alocated = school_graph[school_intention].vacancy[q].teacher_alocated;
+                //if para saber se o professor tem a qualificação necessária para a vaga
+                if(qualification_professor >= vaga_qualification ){
+                  // if para saber se a vaga esta ocupada : -1 representa que a vaga esta desocupada
+                  if(index_graph_prof_alocated == -1){
+
+                    school_graph[school_intention].vacancy[q].teacher_alocated = index_graph_professor;
+                    prof_approved = true;
+
+                  }else{
+                    int qualification_prof_alocated = professor_graph[index_graph_prof_alocated].qualification;
+                    if(qualification_professor == vaga_qualification){ /*condição para saber se ele merece mais a vaga que o outro professor alocado*/
+                      
+                      // if para saber se o professor tem exatamente a qualificação esperada pela vaga
+                      if(qualification_prof_alocated == vaga_qualification){
+                        // if para saber a prioridade de intenção de cada professor e fornecer a vaga para aquele que preferiu a vaga antes
+                        if(free_professores[index_graph_professor].count_intention <= free_professores[index_graph_prof_alocated].count_intention){
+                          
+                          school_graph[school_intention].vacancy[q].teacher_alocated = index_graph_professor;
+                          prof_approved = true;
+                        }
+                      }else{ /* caso não tenha exatamente a qualificação da vaga, o novo professor fica com a vaga*/
+                        school_graph[school_intention].vacancy[q].teacher_alocated = index_graph_professor;
+                        prof_approved = true;
+
+                      }
+                    }else if(qualification_prof_alocated == vaga_qualification){
+
+                      prof_approved = false;
+                      
+                    }else if(free_professores[index_graph_professor].count_intention <= free_professores[index_graph_prof_alocated].count_intention){
+                          
+                      school_graph[school_intention].vacancy[q].teacher_alocated = index_graph_professor;
+                      prof_approved = true;
+
+                    }
+                  }
+                }
+              }
+              
+            }
+
+
+            if(prof_approved){
+              if (index_graph_prof_alocated != -1){
+                free_professores[index_graph_prof_alocated].alocated = false;
+                free_professores[index_graph_prof_alocated].count_intention = free_professores[index_graph_prof_alocated].count_intention + 1;
+                
+                if(free_professores[index_graph_prof_alocated].count_intention >= professor_graph[index_graph_prof_alocated].intentions.size()){
+                  free_professores[index_graph_prof_alocated].esgotou_intentions = true;
+                }
+              }
+
+              free_professores[index_graph_professor].alocated = true;
+            }else{
+              free_professores[index_graph_professor].count_intention = free_professores[index_graph_professor].count_intention + 1;
+              if(free_professores[index_graph_professor].count_intention >= professor_graph[index_graph_professor].intentions.size()){
+                free_professores[index_graph_professor].esgotou_intentions = true;
+              }
+            }
+          }
+      }
+  }
 }
 
 

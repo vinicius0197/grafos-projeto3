@@ -4,6 +4,6 @@
 #define MATCHING_H_
 
 
-vector<Matching> matching(Graph, GraphSchool);
+void matching(Graph, GraphSchool &);
 
 #endif

@@ -46,7 +46,10 @@ void read_and_init_graph(Graph &graph, GraphSchool &graphSchool) {
         vector<int> school = split(linha);
 
         for (int i = 1; i<school.size(); i++){
-          vertexSchool.vacancy.push_back(school[i]);
+          VacancyInfo vacancy;
+          vacancy.teacher_alocated = -1;
+          vacancy.qualification=school[i];
+          vertexSchool.vacancy.push_back(vacancy);
         }
         graphSchool.push_back(vertexSchool);
       }
@@ -65,12 +68,13 @@ int main() {
 
   // display_graph(graphTeacher);
   // display_graph_school(graphSchool);
-  match = matching(graphTeacher, graphSchool);
+  matching(graphTeacher, graphSchool);
+  
 
-  for(int i = 0; i < match.size(); i++) {
-    cout << "ESCOLA NÚMERO " << i << "\n";
-    for(int j = 0; j < match[i].professors_id.size(); j++) {
-      cout << "Professor " << match[i].professors_id[j] << " \n";
+  for(int i = 0; i < graphSchool.size(); i++) {
+    cout << "ESCOLA NÚMERO " << i + 1 << "\n";
+    for(int j = 0; j < graphSchool[i].vacancy.size(); j++) {
+      cout << "Professor alocado" << graphSchool[i].vacancy[j].teacher_alocated + 1<< " \n";
     }
     cout << "=====\n";
   }

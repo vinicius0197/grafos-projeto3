@@ -14,11 +14,29 @@ struct Vertex{
     vector <int> intentions;
 };
 
-struct VertexSchool{
-    //0 representa a primeira vaga e 1 a segunda. O valor detro representa a qualificação minima necessária
-    vector <int> vacancy;
+struct VacancyInfo{
+
+    int teacher_alocated;
+    int qualification;
+    /* data */
 };
 
+struct VertexSchool{
+    //0 representa a primeira vaga e 1 a segunda. O valor detro representa a qualificação minima necessário
+    vector <VacancyInfo> vacancy;
+};
+
+
+
+struct FreeProfessor{
+
+    bool esgotou_intentions = false;
+    int professor_id;
+    int count_intention = 0;
+    bool alocated = false;
+
+
+};
 struct Matching {
     int school_id;
     vector <int> professors_id;

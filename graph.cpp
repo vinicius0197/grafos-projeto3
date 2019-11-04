@@ -32,7 +32,7 @@ void display_graph_school(GraphSchool graphSchool) {
   for(int i = 0; i < graphSchool.size(); i++) {
     cout << "Quantidade de vagas na escola " <<i+1 <<": "<< graphSchool[i].vacancy.size() <<endl;
     for(int j = 0; j < graphSchool[i].vacancy.size(); j++) {
-      cout <<"  Qualificação da vaga "<< j+1 <<": " << graphSchool[i].vacancy[j] << endl;
+      cout <<"  Qualificação da vaga "<< j+1 <<": " << graphSchool[i].vacancy[j].qualification << endl;
     }
     cout << "                "<< endl << endl;
   }
