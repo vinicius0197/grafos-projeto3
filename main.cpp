@@ -69,12 +69,14 @@ int main() {
   // display_graph(graphTeacher);
   // display_graph_school(graphSchool);
   matching(graphTeacher, graphSchool);
+
+  cout << "RESULTADOS EMPARELHAMENTO: \n";
   
 
   for(int i = 0; i < graphSchool.size(); i++) {
     cout << "ESCOLA NÚMERO " << i + 1 << "\n";
     for(int j = 0; j < graphSchool[i].vacancy.size(); j++) {
-      cout << "Professor alocado" << graphSchool[i].vacancy[j].teacher_alocated + 1<< " \n";
+      cout << "Professor alocado: " << graphSchool[i].vacancy[j].teacher_alocated + 1<< " \n";
     }
     cout << "=====\n";
   }
